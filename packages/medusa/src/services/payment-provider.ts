@@ -59,7 +59,10 @@ export default class PaymentProviderService extends TransactionBaseService {
   // eslint-disable-next-line max-len
   protected readonly paymentProviderRepository_: typeof PaymentProviderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
-  protected readonly paymentService_: PaymentService
+  protected get paymentService_(): PaymentService {
+    // defer resolution. then it will use the cached resolved service
+    return this.container_.paymentService
+  }
   protected readonly refundRepository_: typeof RefundRepository
   protected readonly customerService_: CustomerService
   protected readonly logger_: Logger
@@ -77,7 +80,6 @@ export default class PaymentProviderService extends TransactionBaseService {
     this.refundRepository_ = container.refundRepository
     this.customerService_ = container.customerService
     this.featureFlagRouter_ = container.featureFlagRouter
-    this.paymentService_ = container.paymentService
     this.logger_ = container.logger
   }
 
